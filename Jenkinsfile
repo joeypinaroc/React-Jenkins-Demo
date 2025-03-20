@@ -7,12 +7,12 @@ pipeline {
     }
 
     stages {
-        using a custom docker image
-        stage('Docker') {
-            steps {
-                sh 'docker build -t my-docker-image .'
-            }
-        }
+        // using a custom docker image
+        // stage('Docker') {
+        //     steps {
+        //         sh 'docker build -t my-docker-image .'
+        //     }
+        // }
         stage('Build') {
             agent {
                 docker {
