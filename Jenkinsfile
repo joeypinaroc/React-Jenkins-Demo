@@ -69,8 +69,6 @@ pipeline {
         //             # echo "Deploying to Site ID: $NETLIFY_SITE_ID"
         //             # netlify status
         //             # netlify deploy --prod --dir=build
-
-
         //         '''
         //     }
         // }
@@ -79,6 +77,7 @@ pipeline {
                 docker {
                     image 'amazon/aws-cli:2.24.27'
                     reuseNode true
+                    args '--entrypoint=""'
                 }
             }
             steps {
@@ -86,6 +85,8 @@ pipeline {
                     sh '''
                         aws --version
                         aws s3 ls
+                        echo "Hello S3!" > index.html
+                        aws s3 cp index.html s3://me-new-jenkins-bucket/index.html
                     '''
                 }
             }
