@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HOST = 'unix:///var/run/docker.sock'
+        // DOCKER_HOST = 'unix:///var/run/docker.sock'
         NETLIFY_SITE_ID = '9e2f3529-7627-40fc-8cf3-8f291c81520f'
         NETLIFY_AUTH_TOKEN = credentials('react-app-demo')
     }
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sh '''
                     ls -la
-                    echo "Docker host: $DOCKER_HOST"
+                    // echo "Docker host: $DOCKER_HOST"
                     node --version
                     npm --version
                     npm install
