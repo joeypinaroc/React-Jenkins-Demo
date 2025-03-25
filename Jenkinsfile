@@ -8,47 +8,47 @@ pipeline {
     }
 
     stages {
-        // using a custom docker image
+        // // using a custom docker image
         // stage('Docker') {
         //     steps {
         //         sh 'docker build -t my-docker-image .'
         //     }
         // }
-        // stage('Build') {
-        //     agent {
-        //         docker {
+        stage('Build') {
+            agent {
+                docker {
 
-        //             image 'node:20.11.0-bullseye'
-        //             reuseNode true
-        //         }
-        //     }
-        //     steps {
-        //         sh '''
-        //             ls -la
-        //             // echo "Docker host: $DOCKER_HOST"
-        //             node --version
-        //             npm --version
-        //             npm install
-        //             npm run build
-        //             ls -la
-        //         '''
-        //     }
-        // }
+                    image 'node:20.11.0-bullseye'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    ls -la
+                    // echo "Docker host: $DOCKER_HOST"
+                    node --version
+                    npm --version
+                    npm install
+                    npm run build
+                    ls -la
+                '''
+            }
+        }
 
-        // stage('Test') {
-        //     agent {
-        //         docker {
-        //             image 'node:20.11.0-bullseye'
-        //             reuseNode true
-        //         }
-        //     }
-        //     steps {
-        //         sh '''
-        //             test -f build/index.html
-        //             npm test
-        //         '''
-        //     }
-        // }
+        stage('Test') {
+            agent {
+                docker {
+                    image 'node:20.11.0-bullseye'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    test -f build/index.html
+                    npm test
+                '''
+            }
+        }
 
         // stage('Deploy') {
         //     agent {
@@ -75,13 +75,13 @@ pipeline {
         //         '''
         //     }
         // }
-        stage('Build') {
-            agent {
-                docker {
+        // stage('Build') {
+        //     agent {
+        //         docker {
 
-                }
-            }
-        }
+        //         }
+        //     }
+        // }
         stage('AWS') {
             agent {
                 docker {
@@ -90,16 +90,17 @@ pipeline {
                     args '--entrypoint=""'
                 }
             }
-            // environment {
-            //     AWS_S3_BUCKET = ''
-            // }
+            environment {
+                AWS_S3_BUCKET = 'me-new-jenkins-bucket'
+            }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'aws-s3-key', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
                         aws --version
                         aws s3 ls
-                        # echo "Hello S3!" > index.html
-                        # aws s3 cp index.html s3://me-new-jenkins-bucket/index.html
+                        echo "Hello S3!" > index.html
+                        aws s3 cp index.html s3://me-new-jenkins-bucket/index.html
+                        aws s3 sync build s3://$AWS_S3_BUCKET
                     '''
                 }
             }
