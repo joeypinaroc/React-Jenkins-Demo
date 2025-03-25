@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sh '''
                     ls -la
-                    // echo "Docker host: $DOCKER_HOST"
+                    # echo "Docker host: $DOCKER_HOST"
                     node --version
                     npm --version
                     npm install
