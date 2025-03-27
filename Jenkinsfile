@@ -28,7 +28,8 @@ pipeline {
                     # echo "Docker host: $DOCKER_HOST"
                     node --version
                     npm --version
-                    npm install
+                    # npm install
+                    npm ci
                     npm run build
                     ls -la
                 '''
