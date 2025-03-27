@@ -142,7 +142,7 @@ pipeline {
                         yum install jq -y
 
                         aws ecs register-task-definition --cli-input-json file://aws/task-definition.json
-                        LATEST_TD_REVISION = $(aws ecs register-task-definition --cli-input-json file://aws/task-definition.json | jq '.taskDefinition.revision')
+                        LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition.json | jq '.taskDefinition.revision')
                         aws ecs update-service --cluster task-cluster-react-prod --service my-new-Service-Prod --task-definition Temp-TaskDefinition-Prod:$LATEST_TD_REVISION
                     '''
                 }
