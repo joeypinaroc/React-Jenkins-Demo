@@ -1,0 +1,32 @@
+{
+    "family": "Temp-TaskDefinition-Prod",
+    "containerDefinitions": [
+        {
+            "name": "TempApp",
+            "image": "nginx:1.27-alpine",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "ngnix-80-tcp",
+                    "containerPort": 80,
+                    "hostPort": 80,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "systemControls": []
+        }
+    ],
+    "networkMode": "awsvpc",
+    "volumes": [],
+    "placementConstraints": [],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "256",
+    "memory": "512"
+}
