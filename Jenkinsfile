@@ -7,6 +7,10 @@ pipeline {
         // NETLIFY_AUTH_TOKEN = credentials('react-app-demo')
     // }
 
+    environment {
+        AWS_DEFAULT_REGION = "us-east-2"
+    }
+
     stages {
     //     // // using a custom docker image
     //     // stage('Docker') {
