@@ -9,6 +9,8 @@ pipeline {
 
     environment {
         AWS_DEFAULT_REGION = "us-east-2"
+        AWS_DOCKER_REGISTRY = "819167064042.dkr.ecr.us-east-2.amazonaws.com/my-react-app-image"
+        APP_NAME = "my-react-app-image"
     }
 
     stages {
@@ -128,11 +130,40 @@ pipeline {
         // }
         
         stage('Build') {
-
+            agent {
+                docker {
+                    image 'node:22-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    # list all files
+                    ls -la
+                    node --version
+                    npm --version
+                    # npm install
+                    npm ci
+                    npm run build
+                    ls -la
+                '''
+            }
         }
 
         stage('Test') {
+            agent {
+                docker {
+                    image 'node:22-alpine'
+                    reuseNode true
+                }
+            }
 
+            steps {
+                sh '''
+                    test -f build/index.html
+                    npm test
+                '''
+            }
         }
 
         stage('Create Docker image') {
@@ -147,6 +178,10 @@ pipeline {
                 sh '''
                     amazon-linux-extras install docker
                     docker build -t my-docker-image-aws .
+
+                    # push image to ECR
+                    aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_DOCKER_REGISTRY
+                    docker push $AWS_DOCKER_REGISTRY/$APP_NAME:latest
                 '''
             }
         }
