@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "name": "TempApp",
-            "image": "nginx:1.27-alpine",
+            "image": "819167064042.dkr.ecr.us-east-2.amazonaws.com/my-react-app-image",
             "cpu": 0,
             "portMappings": [
                 {

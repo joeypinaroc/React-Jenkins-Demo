@@ -9,7 +9,7 @@ pipeline {
 
     environment {
         AWS_DEFAULT_REGION = "us-east-2"
-        AWS_DOCKER_REGISTRY = "819167064042.dkr.ecr.us-east-2.amazonaws.com/my-react-app-image"
+        AWS_DOCKER_REGISTRY = "819167064042.dkr.ecr.us-east-2.amazonaws.com"
         APP_NAME = "my-react-app-image" // ECR image
     }
 
@@ -180,7 +180,8 @@ pipeline {
                     docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME .
 
                     # push image to ECR
-                    aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_DOCKER_REGISTRY
+                    aws ecr get-login-password
+                    docker login --username AWS --password-stdin $AWS_DOCKER_REGISTRY
                     docker push $AWS_DOCKER_REGISTRY/$APP_NAME:latest
                 '''
             }
